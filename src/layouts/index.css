@@ -1,0 +1,17 @@
+
+.jwlogo{
+  margin: 16px;
+  box-sizing: border-box;
+  /* height: 40px; */
+}
+
+.jwlogo img{
+  width: 100%;
+}
+
+.jwsider{
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+}

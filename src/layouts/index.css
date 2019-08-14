@@ -1,12 +1,13 @@
 
 .jwlogo{
-  margin: 16px;
+  width: 200px;
   box-sizing: border-box;
-  /* height: 40px; */
+  height: 64px;
 }
 
 .jwlogo img{
   width: 100%;
+  height: 100%;
 }
 
 .jwsider{

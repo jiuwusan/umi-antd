@@ -8,7 +8,7 @@ export default {
       antd: true,
       dva: true,
       dynamicImport: false,
-      title: 'umi-antd',
+      title: '九五三',
       dll: false,
       
       routes: {

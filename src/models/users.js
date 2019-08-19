@@ -1,21 +1,41 @@
-import { list } from "../services/users"
+import index from '../services/index'
 import { formatResultsErrors } from "jest-message-util";
+const {
+    queryUserList
+} = index
 export default {
     namespace: 'users',
     state: {
         addShow: false,
         editShow: false,
         detailShow: false,
-        list: []
+        list: [],
+        query: []
     },
     effects: {
+        /**
+         * 查询列表
+         */
         * list({ payload }, { call, put }) {
 
-            let shop_list = yield call(list, payload);
-
+            let list = yield call(queryUserList, payload);
+            console.log("获取列表", {
+                list,
+                payload
+            });
             yield put({
                 type: 'updateState',
-                payload: { list: shop_list },
+                payload: { "list": list },
+            });
+
+        },
+        /**
+         * 搜索
+         */
+        * query(action, { select, call, put }) {
+            yield put({
+                type: 'updateState',
+                payload: { "query": action.payload.query }
             });
 
         },
@@ -25,8 +45,8 @@ export default {
         updateState(state, { payload }) {
             return {
                 ...state,
-                ...payload, 
+                ...payload,
             }
-        },
+        }
     }
 }

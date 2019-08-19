@@ -36,7 +36,7 @@ class BasicLayout extends React.Component {
 
   render() {
     const { props } = this;
-    console.log("props",props);
+    console.log("props", props);
     if (props.location.pathname === '/login') {
       return (<Login></Login>);
     }
@@ -61,7 +61,7 @@ class BasicLayout extends React.Component {
                 title={
                   <span>
                     <Icon type="user" />
-                    <span>系统设置</span>
+                    <span>基本设置</span>
                   </span>
                 }
               >
@@ -99,8 +99,22 @@ class BasicLayout extends React.Component {
                 </Dropdown>
               </div>
             </Header>
-            <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-              <div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
+            <Content style={{ margin: '16px 16px 0', overflow: 'initial' }}>
+
+              <div style={{marginBottom:"10px"}}>
+                <Breadcrumb>
+                  <Breadcrumb.Item href="">
+                    <Icon type="home" />
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item href="">
+                    <Icon type="user" />
+                    <span>Application List</span>
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item>Application</Breadcrumb.Item>
+                </Breadcrumb>
+              </div>
+
+              <div style={{ padding: 16, background: '#fff', textAlign: 'center', borderRadius: "8px" }}>
                 {props.children}
               </div>
             </Content>

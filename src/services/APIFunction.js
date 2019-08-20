@@ -1,7 +1,6 @@
 import request from '../utils/request'
-import api from './api'
 // import { apiPrefix } from 'utils/config'
-const apiPrefix = "";
+const apiPrefix = "/api/v1";
 
 /**
  * @param {请求方式，接口地址} params 
@@ -25,9 +24,12 @@ const gen = params => {
   }
 }
 
-const APIFunction = {}
-for (const key in api) {
-  APIFunction[key] = gen(api[key])
+const APIFunction = api => {
+  const API = {}
+  for (const key in api) {
+    API[key] = gen(api[key])
+  }
+  return API;
 }
 
-export default APIFunction
+export default APIFunction;

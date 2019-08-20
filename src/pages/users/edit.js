@@ -34,7 +34,7 @@ class Add extends React.PureComponent {
     };
 
     render() {
-        const {addShow} = this.props;
+        const {editShow} = this.props;
         const { getFieldDecorator } = this.props.form;
         return (
             <div>
@@ -42,7 +42,7 @@ class Add extends React.PureComponent {
           title="Create a new account"
           width={720}
           onClose={this.onClose}
-          visible={addShow}
+          visible={editShow}
         >
           <Form layout="vertical" hideRequiredMark>
             <Row gutter={16}>

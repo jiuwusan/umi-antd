@@ -2,7 +2,6 @@ import axios from 'axios'
 import { cloneDeep, isEmpty } from 'lodash'
 import pathToRegexp from 'path-to-regexp'
 import { message } from 'antd'
-import qs from 'qs'
 // axios.defaults.baseURL = "http://localhost:9531"
 const { CancelToken } = axios
 window.cancelRequest = new Map()
@@ -40,10 +39,10 @@ export default function request(options) {
       cancel,
     })
   })
-console.log("axios请求",options);
+// console.log("axios请求",options);
   return axios(options)
     .then(response => {
-        console.log("请求成功",response);
+        // console.log("请求成功",response);
       const { statusText, status, data } = response
       let result = {}
       if (typeof data === 'object') {

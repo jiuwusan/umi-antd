@@ -1,8 +1,9 @@
-import index from '../services/index'
+import userApi from '../services/usersApi'
 import { formatResultsErrors } from "jest-message-util";
 const {
-    queryUserList
-} = index
+    queryUserList,
+    addUser
+} = userApi
 export default {
     namespace: 'users',
     state: {
@@ -18,16 +19,27 @@ export default {
          */
         * list({ payload }, { call, put }) {
 
-            let list = yield call(queryUserList, payload);
-            console.log("获取列表", {
-                list,
-                payload
-            });
+            let list = yield call(queryUserList, { pageSize: 10, page: 1 });
             yield put({
                 type: 'updateState',
                 payload: { "list": list },
             });
 
+        },
+        /**
+         * 增加用户
+         */
+        * add({ payload }, { call, put }) {
+            
+            let rs = yield call(addUser, { userName: "周开栋", sex: "男" });
+            console.log(rs);
+            //数据提交成功，隐藏表单
+            if (rs.code == 200) {
+                yield put({
+                    type: 'updateState',
+                    payload: { "addShow": false },
+                });
+            }
         },
         /**
          * 搜索

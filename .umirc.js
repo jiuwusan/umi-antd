@@ -27,10 +27,10 @@ export default {
   ],
   //代理接口地址
   proxy: {
-    "/api": {
-      "target": "http://192.168.1.42:9531",
+    "/api/v1": {
+      "target": "http://192.168.1.41:9531",
       "changeOrigin": true,
-      "pathRewrite": { "^/api": "" },
+      "pathRewrite": { "^/api/v1": "" },
       "secure": false, // 不进行证书验证
     }
   },

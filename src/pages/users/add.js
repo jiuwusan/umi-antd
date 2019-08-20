@@ -6,38 +6,49 @@ const { Option } = Select;
 
 //连接model,并将addShow赋值给props
 @connect(({ users }) => ({
-    addShow: users.addShow
+  addShow: users.addShow
 }))
 //创建From
 @Form.create()
 class Add extends React.PureComponent {
- 
-    componentDidMount() {
-        // 初始化
-        const { dispatch } = this.props;
-    }
 
-    showDrawer = () => {
-        const { dispatch } = this.props;
-        dispatch({
-            type: 'users/updateState',
-            payload: { addShow: true },
-        });
-    };
+  componentDidMount() {
+    // 初始化
+    const { dispatch } = this.props;
+  }
 
-    onClose = () => {
-        const { dispatch } = this.props;
-        dispatch({
-            type: 'users/updateState',
-            payload: { addShow: false },
-        });
-    };
+  showDrawer = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'users/updateState',
+      payload: { addShow: true },
+    });
+  };
 
-    render() {
-        const {addShow} = this.props;
-        const { getFieldDecorator } = this.props.form;
-        return (
-            <div>
+  onClose = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'users/updateState',
+      payload: { addShow: false },
+    });
+  };
+
+  saveData = () => {
+    console.log("新增用户");
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'users/add',
+      payload: {userName: "周开栋", sex: "男"},
+    });
+  };
+
+
+  render() {
+    const { addShow } = this.props;
+    const { saveData,onClose } = this;
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <div>
         <Drawer
           title="Create a new account"
           width={720}
@@ -147,17 +158,17 @@ class Add extends React.PureComponent {
               textAlign: 'right',
             }}
           >
-            <Button onClick={this.onClose} style={{ marginRight: 8 }}>
+            <Button onClick={onClose} style={{ marginRight: 8 }}>
               Cancel
             </Button>
-            <Button onClick={this.onClose} type="primary">
+            <Button onClick={saveData} type="primary">
               Submit
             </Button>
           </div>
         </Drawer>
       </div>
-        );
-    }
+    );
+  }
 }
 
 // ReactDOM.render(<Add />, document.getElementById('root'));

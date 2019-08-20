@@ -24,11 +24,12 @@ class List extends React.PureComponent {
     });
   }
 
-  add() {
+  add=()=> {
+    console.log("新增用户");
     const { dispatch } = this.props;
     dispatch({
       type: 'users/updateState',
-      payload: { addShow: true },
+      payload: { addShow: true }
     });
   }
 
@@ -70,7 +71,8 @@ class List extends React.PureComponent {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" icon="search" htmlType="submit" >查 询</Button>
+              <Button type="primary" icon="search" size="small" htmlType="submit" >查 询</Button>
+              <Button type="primary" icon="plus" size="small" className="mgl10" onClick={add} >新增</Button>
             </Form.Item>
           </Form>
 

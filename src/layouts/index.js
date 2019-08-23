@@ -5,7 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Layout, Menu, Breadcrumb, Dropdown, Icon, Avatar, ConfigProvider } from 'antd';
 import Link from 'umi/link';
-import Login from '../components/Login/Login';
+import Login from '../pages/auth/login';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
@@ -37,8 +37,12 @@ class BasicLayout extends React.Component {
   render() {
     const { props } = this;
     console.log("props", props);
-    if (props.location.pathname === '/login') {
-      return (<Login></Login>);
+    if (props.location.pathname === '/auth/login') {
+      return (
+        <ConfigProvider locale={zhCN}>
+          <Layout style={{background:"transparent"}}>{props.children}</Layout>
+        </ConfigProvider>
+      );
     }
     return (
       // 使用中文布局
@@ -101,7 +105,7 @@ class BasicLayout extends React.Component {
             </Header>
             <Content style={{ margin: '16px 16px 0', overflow: 'initial' }}>
 
-              <div style={{marginBottom:"10px"}}>
+              <div style={{ marginBottom: "10px" }}>
                 <Breadcrumb>
                   <Breadcrumb.Item href="">
                     <Icon type="home" />

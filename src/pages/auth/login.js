@@ -1,34 +1,72 @@
-import styles from './Login.less';
+import styles from './auth.less';
 import { Form, Icon, Input, Button, Layout, Checkbox } from 'antd';
 import React from 'react';
+import { connect } from 'dva';
 import router from 'umi/router';
-import vcodeImg from '../../assets/vcode-test.png';
 const { Footer } = Layout;
+
+// 与model建立连接
+@connect(({ auth }) => ({
+  "imgCode": auth.imgCode
+}))
 @Form.create()
-class Login extends React.Component {
+class Login extends React.PureComponent {
+  
+  componentDidMount() {
+    this.getRsaPem();
+    this.getImgCode();
+  }
+
+  getImgCode = e => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'auth/getImgCode',
+      payload: {},
+    });
+  }
+
+  getRsaPem = e => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'auth/getRsaPem',
+      payload: {},
+    });
+  }
+  
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-        router.push('/order/order_list');
+    const { dispatch } = this.props;
+    //验证表单数据
+    this.props.form.validateFields((errors, values) => {
+      if (errors) {
+          console.log('Errors in form!!!');
+          return;
       }
+      //所有的form表单值，等同于values
+      const formData = this.props.form.getFieldsValue();
+      dispatch({
+        type: 'auth/login',
+        payload: formData
+      });
+
     });
   };
 
   render() {
+    const {imgCode} = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <Layout className={[styles.loginBox, "centerXY"]}>
         <div className={styles.loginForm}>
           <Form onSubmit={this.handleSubmit}>
             <Form.Item>
-              {getFieldDecorator('username', {
+              {getFieldDecorator('login_name', {
                 rules: [{ required: true, message: '请输入用户名!' }],
               })(
                 <Input
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   placeholder="Username"
+                  size="large"
                 />,
               )}
             </Form.Item>
@@ -40,6 +78,7 @@ class Login extends React.Component {
                   prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   type="password"
                   placeholder="Password"
+                  size="large"
                 />,
               )}
             </Form.Item>
@@ -52,13 +91,14 @@ class Login extends React.Component {
                     <Input
                       prefix={<Icon type="safety-certificate" style={{ color: 'rgba(0,0,0,.25)' }} />}
                       placeholder="Validate Code"
+                      size="large"
                       style={{ width: "150px" }}
                     />,
                   )}
                 </div>
-                <div>
-                  <img src={vcodeImg} style={{ width: "80px", height: "30px" }}></img>
-                  <a style={{fontSize:"12px",marginLeft:"3px"}}>换一张？</a>
+                <div className="centerY" onClick={this.getImgCode}>
+                  <img src={imgCode} style={{ width: "80px", height: "40px" }}></img>
+                  <div className={styles.codeChange}>换一张？</div>
                 </div>
               </div>
             </Form.Item>

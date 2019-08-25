@@ -1,17 +1,22 @@
 import authApi from '../services/authApi'
+import cryptoApi from '../services/cryptoApi'
 import { formatResultsErrors } from "jest-message-util";
-import NodeRSA from 'node-rsa';
 const {
     getImgCode,
     getRsaPem,
     valiLogin
 } = authApi
+
+const {
+    encrypt
+} = cryptoApi
+
 export default {
     namespace: 'auth',
     state: {
         "key": "",
         "imgCode": "",
-        "privatePem": ""
+        "publicPem": ""
     },
     effects: {
         /**
@@ -36,7 +41,7 @@ export default {
             yield put({
                 type: 'updateState',
                 payload: {
-                    "privatePem": rs.data.privatePem
+                    "publicPem": rs.data.publicPem
                 },
             });
         },
@@ -52,9 +57,9 @@ export default {
          */
         * login({ payload }, { call, put, select }) {
             //加密密码
-            const { privatePem,key } = yield select(_ => _.auth);
-            var RSAKEY = new NodeRSA(privatePem);
-            payload.password = RSAKEY.encryptPrivate(payload.password, 'base64');
+            const { publicPem,key } = yield select(_ => _.auth);
+            console.log("登录",payload);
+            payload.password = encrypt(payload.password, publicPem);
             //删除remember
             delete payload["remember"];
             //提交验证码key

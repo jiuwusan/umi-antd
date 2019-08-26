@@ -12,7 +12,7 @@ const tokenutil = {
         localStorage.setItem('jwToken', token);
         //解析token
         const decoded = jwt_decode(token);
-        console.log("解析后", decoded);
+        // console.log("解析后", decoded);
         //挂载token到axios
         tokenutil.setAxiosToken(token);
     },

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { cloneDeep, isEmpty } from 'lodash'
 import pathToRegexp from 'path-to-regexp'
 import { message } from 'antd'
+import router from 'umi/router';
 // axios.defaults.baseURL = "http://localhost:9531"
 const { CancelToken } = axios
 window.cancelRequest = new Map()
@@ -43,8 +44,11 @@ export default function request(options) {
 // console.log("axios请求",options);
   return axios(options)
     .then(response => {
-        // console.log("请求成功",response);
       const { statusText, status, data } = response
+      //对返回status进行判断
+      if(status==401){
+        router.push("/auth/login");
+      }
       let result = {}
       if (typeof data === 'object') {
         result = data

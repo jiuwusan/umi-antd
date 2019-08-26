@@ -2,7 +2,6 @@ import styles from './auth.less';
 import { Form, Icon, Input, Button, Layout, Checkbox } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
-import router from 'umi/router';
 const { Footer } = Layout;
 
 // 与model建立连接
@@ -123,7 +122,7 @@ class Login extends React.PureComponent {
             </Form.Item>
           </Form>
         </div>
-        <Footer className={styles.loginFooter}>Jiu Wusan ©2019 Created by 953</Footer>
+        <Footer className={styles.loginFooter}>Jiu Wusan ©2019 Created by 953   渝ICP备18007185号-1</Footer>
       </Layout>
 
     );

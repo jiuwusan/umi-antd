@@ -122,7 +122,7 @@ class BasicLayout extends React.Component {
                 {props.children}
               </div>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Jiu Wusan ©2019 Created by 953</Footer>
+            <Footer style={{ textAlign: 'center' }}>Jiu Wusan ©2019 Created by 953  渝ICP备18007185号-1</Footer>
           </Layout>
         </Layout>
       </ConfigProvider>

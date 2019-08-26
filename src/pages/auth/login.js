@@ -13,7 +13,7 @@ const { Footer } = Layout;
 class Login extends React.PureComponent {
   
   componentDidMount() {
-    this.getRsaPem();
+    this.getRsaPublicPem();
     this.getImgCode();
   }
 
@@ -25,10 +25,10 @@ class Login extends React.PureComponent {
     });
   }
 
-  getRsaPem = e => {
+  getRsaPublicPem = e => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'auth/getRsaPem',
+      type: 'auth/getRsaPublicPem',
       payload: {},
     });
   }

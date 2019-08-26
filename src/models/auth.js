@@ -1,14 +1,16 @@
 import authApi from '../services/authApi'
 import cryptoApi from '../services/cryptoApi'
-import { formatResultsErrors } from "jest-message-util";
+import routerutil from '../utils/routerutil'
+import tokenutil from '../utils/tokenutil'
+import { formatResultsErrors } from "jest-message-util"
 const {
     getImgCode,
-    getRsaPem,
+    getRsaPublicPem,
     valiLogin
 } = authApi
 
 const {
-    encrypt
+    publicEncrypt
 } = cryptoApi
 
 export default {
@@ -20,7 +22,7 @@ export default {
     },
     effects: {
         /**
-         * 查询列表
+         * 获取图形验证码
          */
         * getImgCode({ payload }, { call, put }) {
             let rs = yield call(getImgCode, {});
@@ -36,8 +38,8 @@ export default {
         /**
          * 查询列表
          */
-        * getRsaPem({ payload }, { call, put }) {
-            let rs = yield call(getRsaPem, {});
+        * getRsaPublicPem({ payload }, { call, put }) {
+            let rs = yield call(getRsaPublicPem, {});
             yield put({
                 type: 'updateState',
                 payload: {
@@ -57,16 +59,24 @@ export default {
          */
         * login({ payload }, { call, put, select }) {
             //加密密码
-            const { publicPem,key } = yield select(_ => _.auth);
-            console.log("登录",payload);
-            payload.password = encrypt(payload.password, publicPem);
+            const { publicPem, key } = yield select(_ => _.auth);
+            payload.password = publicEncrypt(payload.password, publicPem);
             //删除remember
             delete payload["remember"];
             //提交验证码key
             payload.key = key;
-            console.log("结果",payload);
             let rs = yield call(valiLogin, payload);
-            console.log("登录结果",rs);
+            console.log("登录结果", rs);
+            if (rs.code == 200) {
+                //存token
+                tokenutil.setAuthToken(rs.token);
+                routerutil.toIndex();
+            } else {
+                //刷新图形验证码
+                yield put({
+                    type: 'getImgCode'
+                })
+            }
         }
     },
 

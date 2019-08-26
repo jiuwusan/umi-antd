@@ -12,6 +12,7 @@
     "axios": "^0.19.0",
     "dva": "^2.6.0-beta.6",
     "fs": "^0.0.1-security",
+    "jwt-decode": "^2.2.0",
     "node-rsa": "^1.0.5",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

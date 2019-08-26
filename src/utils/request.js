@@ -33,6 +33,7 @@ export default function request(options) {
 
   options.url = url
   options.params = cloneData
+  //用于取消请求
   options.cancelToken = new CancelToken(cancel => {
     window.cancelRequest.set(Symbol(Date.now()), {
       pathname: window.location.pathname,

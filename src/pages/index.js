@@ -3,7 +3,7 @@ import Redirect from 'umi/redirect'
 
 class Index extends PureComponent {
   render() {
-    return <Redirect to='/users/list' />
+    return <Redirect to='/auth/login' />
   }
 }
 

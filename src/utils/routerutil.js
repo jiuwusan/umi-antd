@@ -8,7 +8,7 @@ const toolutil = {
         router.push(e.key);
     },
     toIndex(){
-        router.push("/");
+        router.push("/users/list");
     }
 
 }

@@ -33,6 +33,9 @@ const tokenutil = {
                 // 退出后再跳转页面
                 console.log("Auth已过期");
                 router.push("/auth/login");
+            }else{
+                //跳转到系统首页
+                router.push("/users/list");
             }
         }else{
             console.log("Auth不存在");

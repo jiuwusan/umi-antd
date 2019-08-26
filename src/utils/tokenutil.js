@@ -31,9 +31,11 @@ const tokenutil = {
                 // 过期
                 //store.dispatch(logoutUser())
                 // 退出后再跳转页面
+                console.log("Auth已过期");
                 router.push("/auth/login");
             }
         }else{
+            console.log("Auth不存在");
             router.push("/auth/login");
         }
     },

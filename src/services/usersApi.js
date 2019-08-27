@@ -1,8 +1,7 @@
 import APIFunction from './APIFunction';
 const api = {
     queryUserList: '/users/list',
-    addUser: 'POST /users/add',
-    loginUser: 'POST /users/login'
+    addUser: 'POST /users/add'
 }
 const API = APIFunction(api);
 

@@ -36,7 +36,7 @@ class BasicLayout extends React.Component {
 
   render() {
     const { props } = this;
-    console.log("props", props);
+    // console.log("props", props);
     if (props.location.pathname === '/auth/login') {
       return (
         <ConfigProvider locale={zhCN}>
@@ -82,7 +82,7 @@ class BasicLayout extends React.Component {
                 }
               >
                 <Menu.Item key="/users/list" onClick={routerutil.toPage}>用户管理</Menu.Item>
-                <Menu.Item key="5">部门管理</Menu.Item>
+                <Menu.Item key="/dept/list" onClick={routerutil.toPage}>部门管理</Menu.Item>
                 <Menu.Item key="6">管理</Menu.Item>
               </SubMenu>
               <Menu.Item key="7">

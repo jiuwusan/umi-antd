@@ -46,8 +46,10 @@ export default function request(options) {
     .then(response => {
       const { statusText, status, data } = response
       //对返回status进行判断
+      console.log("请求状态=="+status);
       if(status==401){
         router.push("/auth/login");
+        return;
       }
       let result = {}
       if (typeof data === 'object') {

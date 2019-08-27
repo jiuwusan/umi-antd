@@ -4,13 +4,14 @@ import { Button, Table, Divider, Tag, Form, Input, ConfigProvider } from 'antd';
 import AddPage from './add';
 import EditPage from './edit';
 import DetailPage from './detail';
+import moment from "moment";
 
 // 与model建立连接
-@connect(({ users }) => ({
-  datalist: users.datalist,
-  addShow: users.addShow,
-  editShow: users.editShow,
-  detailShow: users.detailShow
+@connect(({ dept }) => ({
+  datalist: dept.datalist,
+  addShow: dept.addShow,
+  editShow: dept.editShow,
+  detailShow: dept.detailShow
 }))
 //初始化Form
 @Form.create()
@@ -19,16 +20,16 @@ class List extends React.PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'users/list',
+      type: 'dept/list',
       payload: {},
     });
   }
 
   add = () => {
-    console.log("新增用户");
+    console.log("新增部门");
     const { dispatch } = this.props;
     dispatch({
-      type: 'users/updateState',
+      type: 'dept/updateState',
       payload: { addShow: true }
     });
   }
@@ -47,7 +48,7 @@ class List extends React.PureComponent {
       if (!err) {
         const { dispatch } = this.props;
         dispatch({
-          type: 'users/query',
+          type: 'dept/query',
           payload: { query: values },
         });
       }
@@ -67,7 +68,7 @@ class List extends React.PureComponent {
               {getFieldDecorator('username', {
                 rules: [],
               })(
-                <Input placeholder="用户名" />,
+                <Input placeholder="部门名称" />,
               )}
             </Form.Item>
 
@@ -79,12 +80,7 @@ class List extends React.PureComponent {
 
         </div>
         <div style={{ marginTop: "15px" }}>
-          <Table columns={columns} rowKey="id" dataSource={datalist.list} size="small" pagination={{
-            "size": "small",
-            "total": datalist.total,
-            "showSizeChanger": true,
-            "showQuickJumpetrue": true
-          }} />
+          <Table columns={columns} rowKey="id" dataSource={datalist} size="small" pagination={false}/>
         </div>
         <div>
           <AddPage></AddPage>
@@ -102,10 +98,19 @@ export default List;
 //表单渲染规则
 const columns = [
   {
-    title: '登录名称',
-    dataIndex: 'login_name',
-    key: 'login_name',
-    // render: text => <a href="javascript:;">{text}</a>,
+    title: '部门名称',
+    dataIndex: 'dept_name',
+    key: 'dept_name'
+  },
+  {
+    title: '负责人',
+    dataIndex: 'leader',
+    key: 'leader',
+  },
+  {
+    title: '联系电话',
+    dataIndex: 'phone',
+    key: 'phone',
   },
   {
     title: '邮箱',
@@ -113,23 +118,26 @@ const columns = [
     key: 'email',
   },
   {
-    title: '手机号',
-    dataIndex: 'phonenumber',
-    key: 'phonenumber',
+    title: '排序',
+    dataIndex: 'order_num',
+    key: 'order_num',
   },
   {
-    title: '所属部门',
-    dataIndex: 'dept_id',
-    key: 'dept_id'
+    title: '创建时间',
+    dataIndex: 'created_at',
+    key: 'created_at',
+    render: created_at => (
+    <span>{moment(parseInt(new Date(created_at).getTime())).format('YYYY-MM-DD HH:mm')}</span>
+    )
   },
   {
-    title: '性别',
-    dataIndex: 'sex',
-    key: 'sex',
-    render: sex => (
+    title: '状态',
+    dataIndex: 'status',
+    key: 'status',
+    render: status => (
       <span>
-        <Tag color={sex == '1' ? 'geekblue' : 'green'} key={sex}>
-        {sex == '1' ? '男' : '女'}
+        <Tag color={status == '1' ? 'geekblue' : 'green'} key={status}>
+        {status == '1' ? '正常' : '停用'}
       </Tag></span>
     )
   },

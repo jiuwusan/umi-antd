@@ -56,22 +56,10 @@ class BasicLayout extends React.Component {
 
             <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
               <Menu.Item key="1">
-                <Icon type="pie-chart" />
-                <span>系统监控</span>
+                <Icon type="home" />
+                <span>主页</span>
               </Menu.Item>
 
-              <SubMenu
-                key="sub1"
-                title={
-                  <span>
-                    <Icon type="user" />
-                    <span>基本设置</span>
-                  </span>
-                }
-              >
-                <Menu.Item key="2">定时任务</Menu.Item>
-                <Menu.Item key="3">代码生成</Menu.Item>
-              </SubMenu>
               <SubMenu
                 key="sub2"
                 title={
@@ -85,10 +73,21 @@ class BasicLayout extends React.Component {
                 <Menu.Item key="/dept/list" onClick={routerutil.toPage}>部门管理</Menu.Item>
                 <Menu.Item key="6">管理</Menu.Item>
               </SubMenu>
-              <Menu.Item key="7">
-                <Icon type="file" />
-                <span>File</span>
-              </Menu.Item>
+
+              <SubMenu
+                key="sub1"
+                title={
+                  <span>
+                    <Icon type="tool" />
+                    <span>系统工具</span>
+                  </span>
+                }
+              >
+                <Menu.Item key="2">定时任务</Menu.Item>
+                <Menu.Item key="/generater/list" onClick={routerutil.toPage}>代码生成</Menu.Item>
+              </SubMenu>
+
+              
             </Menu>
 
           </Sider>

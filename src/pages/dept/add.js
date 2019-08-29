@@ -6,8 +6,8 @@ import Onepic from '../../components/upload/Onepic';
 const { Option } = Select;
 
 //连接model,并将addShow赋值给props
-@connect(({ users }) => ({
-  addShow: users.addShow
+@connect(({ dept }) => ({
+  addShow: dept.addShow
 }))
 //创建From
 @Form.create()
@@ -29,7 +29,7 @@ class Add extends React.PureComponent {
   onClose = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'users/updateState',
+      type: 'dept/updateState',
       payload: { addShow: false },
     });
   };
@@ -60,7 +60,7 @@ class Add extends React.PureComponent {
   };
 
   render() {
-    const { addShow } = this.props;
+    const { addShow,datalist } = this.props;
     const { saveData, onClose } = this;
     const { getFieldDecorator } = this.props.form;
     return (
@@ -73,20 +73,7 @@ class Add extends React.PureComponent {
         >
           <Form layout="vertical" hideRequiredMark>
             <Row gutter={16}>
-              <Col span={12}>
-                <Row gutter={16}>
-                  <Form.Item label="用户类型" hasFeedback>
-                    {getFieldDecorator('user_type', {
-                      rules: [{ required: true, message: '请选择用户类型' }],
-                    })(
-                      <Select placeholder="请选择用户类型">
-                        <Option value="100">系统管理员</Option>
-                        <Option value="200">普通用户</Option>
-                      </Select>
-                    )}
-                  </Form.Item>
-                </Row>
-                <Row gutter={16}>
+              <Col span={12}>        
                   <Form.Item label="所属部门">
                     {getFieldDecorator('dept_id', {
                       rules: [{ message: '请选择所属部门' }],
@@ -99,13 +86,8 @@ class Add extends React.PureComponent {
                         onChange={this.deptChange}
                       />
                     )}
-                  </Form.Item>
-                </Row>
+                  </Form.Item>            
               </Col>
-              <Col span={12} style={{ marginTop: "40px", paddingLeft: "100px" }}>
-                <Onepic utext="上传头像"></Onepic>
-              </Col>
-
             </Row>
 
             <Row gutter={16}>

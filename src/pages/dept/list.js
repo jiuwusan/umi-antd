@@ -26,7 +26,7 @@ class List extends React.PureComponent {
   }
 
   add = () => {
-    console.log("新增部门");
+    console.log("新增");
     const { dispatch } = this.props;
     dispatch({
       type: 'dept/updateState',
@@ -68,7 +68,7 @@ class List extends React.PureComponent {
               {getFieldDecorator('username', {
                 rules: [],
               })(
-                <Input placeholder="部门名称" />,
+                <Input placeholder="上级部门" />,
               )}
             </Form.Item>
 
@@ -124,10 +124,10 @@ const columns = [
   },
   {
     title: '创建时间',
-    dataIndex: 'created_at',
-    key: 'created_at',
-    render: created_at => (
-    <span>{moment(parseInt(new Date(created_at).getTime())).format('YYYY-MM-DD HH:mm')}</span>
+    dataIndex: 'created_time',
+    key: 'created_time',
+    render: created_time => (
+    <span>{moment(parseInt(new Date(created_time).getTime())).format('YYYY-MM-DD HH:mm')}</span>
     )
   },
   {

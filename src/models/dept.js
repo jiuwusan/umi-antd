@@ -18,18 +18,7 @@ export default {
         datalist: [],
         query: [],
         parameter: {
-            login_name: "",//账号
-            password: "",//密码
-            nick_name: "",//用户昵称
-            real_name: "",//真实姓名
-            user_type: "",//用户类型
-            email: "",//用户邮箱
-            phonenumber: "",//手机号码
-            dept_id: "",//部门ID
-            sex: "",//用户性别（0男 1女 2未知
-            avatar: "",//头像路径
-            status: "",//帐号状态（0正常 1停用）
-            remark: ""//备注
+            dept_name: ""
         }
     },
     effects: {
@@ -73,7 +62,8 @@ export default {
                 payload: { "query": action.payload.query }
             });
 
-        },
+        }
+        
     },
 
     reducers: {

@@ -1,7 +1,8 @@
 import generaterApi from '../services/generaterApi'
 import { formatResultsErrors } from "jest-message-util";
 const {
-    queryDataList
+    queryDataList,
+    genCode
 } = generaterApi
 export default {
     namespace: 'generater',
@@ -14,7 +15,6 @@ export default {
         pageSize: 10,
         page: 1,
         parameter: {
-            login_name: ""
         }
     },
     effects: {
@@ -67,7 +67,7 @@ export default {
         * pageSizeChange({ payload }, { put }) {
             yield put({
                 type: 'updateState',
-                payload: { "pageSize": payload.size,"page":1 }
+                payload: { "pageSize": payload.size, "page": 1 }
             });
             yield put({
                 type: 'tablelist'
@@ -84,6 +84,14 @@ export default {
             yield put({
                 type: 'tablelist'
             });
+        },
+
+        /**
+         * 生成代码
+         */
+        * genCode({ payload }, { call }) {
+            console.log("payload", payload);
+            let rs = yield call(genCode, { tablename: payload.tablename });
         }
     },
 

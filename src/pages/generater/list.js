@@ -29,19 +29,28 @@ class List extends React.PureComponent {
     });
   }
 
-  pageSizeChange= (current, size) => {
+  pageSizeChange = (current, size) => {
     const { dispatch } = this.props;
     dispatch({
       type: 'generater/pageSizeChange',
-      payload: {current, size}
+      payload: { current, size }
     });
   }
 
-  pageChange= (page, pageSize) => {
+  pageChange = (page, pageSize) => {
     const { dispatch } = this.props;
     dispatch({
       type: 'generater/pageChange',
-      payload: {page, pageSize}
+      payload: { page, pageSize }
+    });
+  }
+
+  genCode = (tablename) => {
+    console.log("生成代码", tablename);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'generater/genCode',
+      payload: { tablename }
     });
   }
 
@@ -59,9 +68,53 @@ class List extends React.PureComponent {
   };
 
   render() {
-    const { search,pageChange,pageSizeChange} = this;
+    const { search, pageChange, pageSizeChange,genCode } = this;
     const { datalist } = this.props;
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+
+    //表单渲染规则
+    const columns = [
+      {
+        title: '表名',
+        dataIndex: 'table_name',
+        key: 'table_name',
+        // render: text => <a href="javascript:;">{text}</a>,
+      },
+      {
+        title: '表名(zh-cn)',
+        dataIndex: 'table_comment',
+        key: 'table_comment',
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'create_time',
+        key: 'create_time',
+        render: created_time => (
+          <span>{moment(parseInt(new Date(created_time).getTime())).format('YYYY-MM-DD HH:mm')}</span>
+        )
+      },
+      {
+        title: '更新时间',
+        dataIndex: 'update_time',
+        key: 'update_time',
+        render: update_time => (
+          <span>{(update_time || "") == "" ? (
+            <Tag color='green' key="update_time">无更新</Tag>
+          ) : moment(parseInt(new Date(update_time).getTime())).format('YYYY-MM-DD HH:mm')}</span>
+        )
+      },
+      {
+        title: '操作',
+        key: 'table_id',
+        render: (record) => (
+          <span>
+            <Button onClick={genCode.bind(this, record.table_name)} type="primary" icon="tool" size="small" htmlType="submit" >生成代码</Button>
+          </span>
+        ),
+      },
+    ];
+
+
     return (
 
       <div>
@@ -87,11 +140,11 @@ class List extends React.PureComponent {
             "total": datalist.total,
             "showSizeChanger": true,
             "showQuickJumpetrue": true,
-            "onChange":pageChange,
-            "onShowSizeChange":pageSizeChange
+            "onChange": pageChange,
+            "onShowSizeChange": pageSizeChange
           }} />
         </div>
-        
+
       </div>
 
     );
@@ -100,44 +153,4 @@ class List extends React.PureComponent {
 
 export default List;
 
-//表单渲染规则
-const columns = [
-  {
-    title: '表名',
-    dataIndex: 'table_name',
-    key: 'table_name',
-    // render: text => <a href="javascript:;">{text}</a>,
-  },
-  {
-    title: '表名(zh-cn)',
-    dataIndex: 'table_comment',
-    key: 'table_comment',
-  },
-  {
-    title: '创建时间',
-    dataIndex: 'create_time',
-    key: 'create_time',
-    render: created_time => (
-        <span>{moment(parseInt(new Date(created_time).getTime())).format('YYYY-MM-DD HH:mm')}</span>
-        )
-  },
-  {
-    title: '更新时间',
-    dataIndex: 'update_time',
-    key: 'update_time',
-    render: update_time => (
-        <span>{ (update_time||"")==""?(
-            <Tag color='green' key="update_time">无更新</Tag>
-          ):moment(parseInt(new Date(update_time).getTime())).format('YYYY-MM-DD HH:mm')}</span>
-        )
-  },
-  {
-    title: '操作',
-    key: 'table_id',
-    render: (record) => (
-      <span>
-        <Button type="primary" icon="tool" size="small" htmlType="submit" >生成代码</Button>
-      </span>
-    ),
-  },
-];
+

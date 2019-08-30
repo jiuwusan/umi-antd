@@ -7,7 +7,8 @@ const { Option } = Select;
 
 //连接model,并将addShow赋值给props
 @connect(({ users }) => ({
-  addShow: users.addShow
+  addShow: users.addShow,
+  
 }))
 //创建From
 @Form.create()

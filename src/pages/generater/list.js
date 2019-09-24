@@ -109,6 +109,7 @@ class List extends React.PureComponent {
         render: (record) => (
           <span>
             <Button onClick={genCode.bind(this, record.table_name)} type="primary" icon="tool" size="small" htmlType="submit" >生成代码</Button>
+            <Button onClick={genCode.bind(this, record.table_name)} type="danger" icon="tool" size="small" htmlType="submit" >配置</Button>
           </span>
         ),
       },

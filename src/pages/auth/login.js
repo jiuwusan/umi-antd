@@ -2,6 +2,7 @@ import styles from './auth.less';
 import { Form, Icon, Input, Button, Layout, Checkbox } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
+import beianIcon from '../../assets/beian.png';
 const { Footer } = Layout;
 
 // 与model建立连接
@@ -10,7 +11,7 @@ const { Footer } = Layout;
 }))
 @Form.create()
 class Login extends React.PureComponent {
-  
+
   componentDidMount() {
     this.getRsaPublicPem();
     this.getImgCode();
@@ -31,15 +32,15 @@ class Login extends React.PureComponent {
       payload: {},
     });
   }
-  
+
   handleSubmit = e => {
     e.preventDefault();
     const { dispatch } = this.props;
     //验证表单数据
     this.props.form.validateFields((errors, values) => {
       if (errors) {
-          console.log('Errors in form!!!');
-          return;
+        console.log('Errors in form!!!');
+        return;
       }
       //所有的form表单值，等同于values
       const formData = this.props.form.getFieldsValue();
@@ -52,7 +53,7 @@ class Login extends React.PureComponent {
   };
 
   render() {
-    const {imgCode} = this.props;
+    const { imgCode } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <Layout className={[styles.loginBox, "centerXY"]}>
@@ -122,7 +123,13 @@ class Login extends React.PureComponent {
             </Form.Item>
           </Form>
         </div>
-        <Footer className={styles.loginFooter}>Jiu Wusan ©2019 Created by 953   渝ICP备18007185号-1</Footer>
+        <Footer className={styles.loginFooter+" centerX"}>
+          <div>Jiu Wusan ©2019 Created by 953   渝ICP备18007185号-1</div>
+          <div className="centerY">
+            <img className={styles.beianIcon} src={beianIcon}></img>
+            <div>渝公网安备 50011402500365号</div>
+          </div>
+        </Footer>
       </Layout>
 
     );

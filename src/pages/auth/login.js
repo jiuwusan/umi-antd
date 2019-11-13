@@ -130,7 +130,7 @@ class Login extends React.PureComponent {
         </div>
         <Footer className={styles.loginFooter + " centerX"}>
           <div>Jiu Wusan ©2019 Created by 953   渝ICP备18007185号-1</div>
-          <div onClick={this.toBeianIndex} className="centerY">
+          <div style={{cursor:"pointer"}} onClick={this.toBeianIndex} className="centerY">
             <img className={styles.beianIcon} src={beianIcon}></img>
             <div>渝公网安备 50011402500365号</div>
           </div>

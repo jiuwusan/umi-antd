@@ -3,6 +3,7 @@ import { Form, Icon, Input, Button, Layout, Checkbox } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import beianIcon from '../../assets/beian.png';
+import router from 'umi/router';
 const { Footer } = Layout;
 
 // 与model建立连接
@@ -51,6 +52,10 @@ class Login extends React.PureComponent {
 
     });
   };
+
+  toBeianIndex = e => {
+    window.open("http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50011402500365");
+  }
 
   render() {
     const { imgCode } = this.props;
@@ -123,9 +128,9 @@ class Login extends React.PureComponent {
             </Form.Item>
           </Form>
         </div>
-        <Footer className={styles.loginFooter+" centerX"}>
+        <Footer className={styles.loginFooter + " centerX"}>
           <div>Jiu Wusan ©2019 Created by 953   渝ICP备18007185号-1</div>
-          <div className="centerY">
+          <div onClick={this.toBeianIndex} className="centerY">
             <img className={styles.beianIcon} src={beianIcon}></img>
             <div>渝公网安备 50011402500365号</div>
           </div>

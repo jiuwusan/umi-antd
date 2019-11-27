@@ -1,9 +1,9 @@
 import request from '../utils/request'
-// import { apiPrefix } from 'utils/config'
-const apiPrefix = "/api/v1";
+import config from '../utils/config'
+const { apiPrefix } = config;
 
 /**
- * @param {请求方式，接口地址} params 
+ * @param {请求方式，接口地址} params
  */
 const gen = params => {
   let url = apiPrefix + params
@@ -15,7 +15,7 @@ const gen = params => {
     url = apiPrefix + paramsArray[1]
   }
 
-  return function(data) {
+  return function (data) {
     return request({
       url,
       data,

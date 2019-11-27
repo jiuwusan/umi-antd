@@ -2,7 +2,12 @@
 // ref: https://umijs.org/config/
 import { resolve } from 'path'
 export default {
+  base: '/admin/',
+  publicPath: '/admin/',
+  outputPath: './admin',
   treeShaking: true,
+  history: 'browser',
+  "exportStatic": {},//路由为静态页面
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     ['umi-plugin-react', {
@@ -25,14 +30,9 @@ export default {
       },
     }],
   ],
-  //代理接口地址
-  proxy: {
-    "/api/v1": {
-      "target": "http://127.0.0.1:9531",
-      "changeOrigin": true,
-      "pathRewrite": { "^/api/v1": "" },
-      "secure": false, // 不进行证书验证
-    }
+  chainWebpack(config, { webpack }) {
+    // 设置 alias
+    config.output.filename(`[name].${Date.now()}.js`).end();
   },
   alias: {
     api: resolve(__dirname, './src/services/')

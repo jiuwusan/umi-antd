@@ -34,8 +34,11 @@ export default {
     // 设置 alias
     config.output.filename(`[name].${Date.now()}.js`).end();
   },
+  //简化引用方式
   alias: {
-    api: resolve(__dirname, './src/services/')
+    api: resolve(__dirname, './src/api/'),
+    services: resolve(__dirname, './src/services/'),
+    utils: resolve(__dirname, './src/utils/')
   },
   mock: {
     //exclude: ['mock/**/*.js'],

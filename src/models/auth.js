@@ -1,8 +1,8 @@
-import authApi from '../services/authApi'
-import cryptoApi from '../services/cryptoApi'
-import routerutil from '../utils/routerutil'
-import tokenutil from '../utils/tokenutil'
-import { formatResultsErrors } from "jest-message-util"
+import authApi from 'api/authApi'
+import cryptoApi from 'api/cryptoApi'
+import routerutil from 'utils/routerutil'
+import authutil from 'utils/authutil'
+import notification from 'utils/notification'
 const {
     getImgCode,
     getRsaPublicPem,
@@ -69,9 +69,10 @@ export default {
             console.log("登录结果", rs);
             if (rs.code == 200) {
                 //存token
-                tokenutil.setAuthToken(rs.token);
+                authutil.setAuthToken(rs.token);
                 routerutil.toIndex();
             } else {
+                notification.error(rs.msg);
                 //刷新图形验证码
                 yield put({
                     type: 'getImgCode'

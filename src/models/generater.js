@@ -1,4 +1,4 @@
-import generaterApi from '../services/generaterApi'
+import generaterApi from '../api/generaterApi'
 import { formatResultsErrors } from "jest-message-util";
 const {
     queryDataList,

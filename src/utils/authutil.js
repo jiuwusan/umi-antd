@@ -6,7 +6,7 @@ import router from 'umi/router';
 /**
  * 通用工具类
  */
-const tokenutil = {
+const authutil = {
     setAuthToken(token) {
         //存token
         localStorage.setItem('jwToken', token);
@@ -14,7 +14,7 @@ const tokenutil = {
         const decoded = jwt_decode(token);
         // console.log("解析后", decoded);
         //挂载token到axios
-        tokenutil.setAxiosToken(token);
+        authutil.setAxiosToken(token);
     },
     refreshAuthToken() {
         let token = localStorage.jwToken;
@@ -51,4 +51,4 @@ const tokenutil = {
 
 }
 
-export default tokenutil;
+export default authutil;

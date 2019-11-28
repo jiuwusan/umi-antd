@@ -1,4 +1,4 @@
-import userApi from '../services/usersApi'
+import userApi from '../api/usersApi'
 import { formatResultsErrors } from "jest-message-util";
 const {
     queryUserList,

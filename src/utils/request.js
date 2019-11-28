@@ -1,10 +1,13 @@
 import axios from 'axios'
+import qs from 'qs';
 import { cloneDeep, isEmpty } from 'lodash'
 import pathToRegexp from 'path-to-regexp'
 import { message } from 'antd'
 import router from 'umi/router';
 import { notification } from 'antd';
-// axios.defaults.baseURL = "http://localhost:9531"
+import util from './util';
+import config from './config';
+import authutil from './authutil';
 const { CancelToken } = axios;
 window.cancelRequest = new Map();
 //定义状态码
@@ -29,23 +32,40 @@ const codeMessage = {
 export default function request(options) {
   let { data, url, method = 'get' } = options
   const cloneData = cloneDeep(data)
-
+  const original = url.replace(config.apiPrefix == "/" ? "" : config.apiPrefix, "");
   try {
-    let domain = ''
+    let domain = '';
+    /**
+     如下步骤解决动态路由参数
+     接口地址 url = http://127.0.0.1:8000/platform/main/main/user/:id
+     参数 data = {
+      "id":"zkd",
+      "name":"jws"
+     }
+     最终得到如下结果
+     url = http://127.0.0.1:8000/platform/main/main/user/zkd
+     data = {
+      "name":"jws"
+     }
+     */
+    //如下步骤解决动态路由参数
+    //验证接口地址 (eg:http://127.0.0.1:8000/platform/main/main/user/:id)
     const urlMatch = url.match(/[a-zA-z]+:\/\/[^/]*/)
     if (urlMatch) {
       ;[domain] = urlMatch
       url = url.slice(domain.length)
     }
-
+    //将链接中的 :id 提取出来
     const match = pathToRegexp.parse(url)
+    //将链接中的参数替换为data里面的值，实现动态路由
     url = pathToRegexp.compile(url)(data)
-
+    //删除参数data内重复字段
     for (const item of match) {
       if (item instanceof Object && item.name in cloneData) {
         delete cloneData[item.name]
       }
     }
+    //得到新的接口地址
     url = domain + url
   } catch (e) {
     message.error(e.message)
@@ -53,6 +73,14 @@ export default function request(options) {
 
   options.url = url
   options.params = cloneData
+  //截断post请求的params
+  if (options.method == "POST") {
+    options.params = {}
+    //需要进行data格式化
+    if (util.inStrArray(original, config.qsclude)) {
+      options.data = qs.stringify(options.data);
+    }
+  }
   //用于取消请求
   options.cancelToken = new CancelToken(cancel => {
     window.cancelRequest.set(Symbol(Date.now()), {
@@ -60,42 +88,43 @@ export default function request(options) {
       cancel,
     })
   })
-  // console.log("axios请求",options);
+
+  //文件下载
+  if (url.includes('download')) {
+    options.responseType = 'blob';
+  }
+
+  //文件上传
+  if (url.includes('/upload')) {
+    options.headers = {
+      'Content-Type': 'multipart/form-data'
+    };
+    options.transformRequest = [function (data) {
+      //重写上传参数
+      let formData = new FormData();
+      for (var key in options.data) {
+        formData.append(key, options.data[key])
+      }
+      return formData
+    }];
+  }
+
+  // console.log("axios请求", options);
+
   return axios(options)
     .then(response => {
-      const { statusText, status, data } = response;
-      const errortext = codeMessage[status] || statusText;
-      //对返回status进行判断
-      if (status == 401) {
-        notification.error({
-          message: '未登录或登录已过期，请重新登录。',
-        });
-        router.push("/auth/login");
-        return;
-      } else if (status != 200) {
-        notification.error({
-          message: `请求错误 ${status}: ${options.url}`,
-          description: errortext,
-        });
-        // if (status === 403) {
-        //   router.push('/exception/403');
-        //   return;
-        // }
-        // if (status <= 504 && status >= 500) {
-        //   router.push('/exception/500');
-        //   return;
-        // }
-        // if (status >= 404 && status < 422) {
-        //   router.push('/exception/404');
-        //   return;
-        // }
-      }
+      const { statusText, status, data, headers } = response;
 
       let result = {}
       if (typeof data === 'object') {
+
         result = data
         if (Array.isArray(data)) {
           result.list = data
+        }
+        //表格导出 特定的返回
+        if (String(data) === '[object Blob]') {
+          result.data = data
         }
       } else {
         result.data = data
@@ -105,6 +134,7 @@ export default function request(options) {
         success: true,
         message: statusText,
         statusCode: status,
+        headers: headers,
         ...result,
       })
     })
@@ -124,9 +154,26 @@ export default function request(options) {
         const { data, statusText } = response
         statusCode = response.status
         msg = data.message || statusText
+        //对返回status进行判断
+        if (statusCode == 401) {
+          notification.error({
+            message: '未登录或登录已过期，请重新登录。',
+          });
+          //清空本地jwToen,和请求携带的token
+          authutil.delToken();
+        } else {
+          notification.error({
+            message: `请求错误 ${statusCode}: ${options.url}`,
+            description: msg,
+          });
+        }
       } else {
         statusCode = 600
         msg = error.message || 'Network Error'
+        notification.error({
+          message: `Network Error`,
+          description: '网络连接错误，请检查网络',
+        });
       }
 
       /* eslint-disable */

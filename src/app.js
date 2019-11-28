@@ -1,6 +1,6 @@
-import tokenutil from './utils/tokenutil'
+import authutil from './utils/authutil'
 //重新获取token
-tokenutil.refreshAuthToken();
+authutil.refreshAuthToken();
 export const dva = {
   config: {
     onError(err) {

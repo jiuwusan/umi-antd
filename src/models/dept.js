@@ -1,4 +1,4 @@
-import deptApi from '../services/deptApi'
+import deptApi from '../api/deptApi'
 import util from '../utils/util'
 import { formatResultsErrors } from "jest-message-util";
 const {

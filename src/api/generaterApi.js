@@ -1,7 +1,8 @@
 import APIFunction from './APIFunction';
 const api = {
     queryDataList: 'POST /tool/generater/tablelist',
-    genCode: '/tool/generater/genCode'
+    genCode: '/tool/generater/genCode',
+    genCodeColumns: '/tool/generater/genCodeColumns'
 }
 const API = APIFunction(api);
 

@@ -1,17 +1,22 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Button, Table, Divider, Tag, Form, Input, ConfigProvider } from 'antd';
+import { Button, Table, Divider, Tag, Form, Input, Modal } from 'antd';
 import moment from "moment";
+import GenCodeSet from "./genCodeSet";
 // 与model建立连接
 @connect(({ generater }) => ({
-  datalist: generater.datalist,
-  addShow: generater.addShow,
-  editShow: generater.editShow,
-  detailShow: generater.detailShow
+  datalist: generater.datalist
 }))
 //初始化Form
 @Form.create()
 class List extends React.PureComponent {
+
+  state = {
+    visible: false,
+    columnsSetting: [],
+    tableName: "",
+    settingKey: "qwer"
+  }
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -54,6 +59,26 @@ class List extends React.PureComponent {
     });
   }
 
+  genCodeSetting = (tablename) => {
+    console.log("生成代码配置", tablename);
+    let _this = this;
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'generater/genCodeColumns',
+      payload: { tablename },
+      callback: (res) => {
+        if (res.code == 200) {
+          _this.setState({
+            visible: true,
+            tableName: res.tableName,
+            columnsSetting: res.columnsSetting,
+            settingKey: Math.random()
+          })
+        }
+      }
+    });
+  }
+
   search = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -67,10 +92,23 @@ class List extends React.PureComponent {
     });
   };
 
+  cancelSet = e => {
+    this.setState({
+      visible: false
+    })
+  }
+
+  enterSet = e => {
+    this.setState({
+      visible: false
+    })
+  }
+
   render() {
-    const { search, pageChange, pageSizeChange,genCode } = this;
+    const { search, pageChange, pageSizeChange, genCode, genCodeSetting, cancelSet } = this;
     const { datalist } = this.props;
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+    const { tableName, columnsSetting, settingKey } = this.state;
+    const { getFieldDecorator } = this.props.form;
 
     //表单渲染规则
     const columns = [
@@ -109,7 +147,8 @@ class List extends React.PureComponent {
         render: (record) => (
           <span>
             <Button onClick={genCode.bind(this, record.table_name)} type="primary" icon="tool" size="small" htmlType="submit" >生成代码</Button>
-            <Button onClick={genCode.bind(this, record.table_name)} type="danger" icon="tool" size="small" htmlType="submit" >配置</Button>
+            <Divider type="vertical" />
+            <Button onClick={genCodeSetting.bind(this, record.table_name)} type="danger" icon="tool" size="small" htmlType="submit" >配置</Button>
           </span>
         ),
       },
@@ -145,7 +184,13 @@ class List extends React.PureComponent {
             "onShowSizeChange": pageSizeChange
           }} />
         </div>
-
+        <Modal
+          title={tableName}
+          visible={this.state.visible}
+          onOk={this.enterSet}
+          onCancel={this.cancelSet}>
+          <GenCodeSet key={settingKey} columnsSetting={columnsSetting}></GenCodeSet>
+        </Modal>
       </div>
 
     );

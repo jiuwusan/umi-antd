@@ -2,7 +2,8 @@ import generaterApi from '../api/generaterApi'
 import { formatResultsErrors } from "jest-message-util";
 const {
     queryDataList,
-    genCode
+    genCode,
+    genCodeColumns
 } = generaterApi
 export default {
     namespace: 'generater',
@@ -14,8 +15,8 @@ export default {
         queryParams: {},
         pageSize: 10,
         page: 1,
-        parameter: {
-        }
+        parameter: {},
+        columnsSetting: []
     },
     effects: {
         /**
@@ -85,13 +86,30 @@ export default {
                 type: 'tablelist'
             });
         },
-
         /**
          * 生成代码
          */
         * genCode({ payload }, { call }) {
             console.log("payload", payload);
             let rs = yield call(genCode, { tablename: payload.tablename });
+        },
+        /**
+         * 生成代码配置
+         */
+        * genCodeColumns({ payload, callback }, { call }) {
+            console.log("payload", payload);
+            let rs = yield call(genCodeColumns, { tablename: payload.tablename });
+            if (rs.code == 200) {
+                callback({
+                    code: 200,
+                    tableName: payload.tablename,
+                    columnsSetting: rs.data
+                })
+            } else {
+                callback({
+                    code: -99
+                })
+            }
         }
     },
 

@@ -99,9 +99,17 @@ class List extends React.PureComponent {
   }
 
   enterSet = e => {
-    this.setState({
-      visible: false
-    })
+    let that = this;
+    //首先验证基本信息是否完整
+    that.genCodeSetForm.props.form.validateFields((err, values) => {
+      console.log("配置参数", values)
+      if (!err) {
+        console.log("配置参数", values)
+      }
+    });
+    // this.setState({
+    //   visible: false
+    // })
   }
 
   render() {
@@ -185,11 +193,12 @@ class List extends React.PureComponent {
           }} />
         </div>
         <Modal
+          width={"70vw"}
           title={tableName}
           visible={this.state.visible}
           onOk={this.enterSet}
           onCancel={this.cancelSet}>
-          <GenCodeSet key={settingKey} columnsSetting={columnsSetting}></GenCodeSet>
+          <GenCodeSet key={settingKey} columnsSetting={columnsSetting} wrappedComponentRef={(settingForm) => this.genCodeSetForm = settingForm}></GenCodeSet>
         </Modal>
       </div>
 

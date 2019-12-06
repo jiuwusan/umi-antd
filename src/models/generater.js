@@ -3,7 +3,8 @@ import { formatResultsErrors } from "jest-message-util";
 const {
     queryDataList,
     genCode,
-    genCodeColumns
+    genCodeColumns,
+    settingCodeColumns
 } = generaterApi
 export default {
     namespace: 'generater',
@@ -108,6 +109,24 @@ export default {
             } else {
                 callback({
                     code: -99
+                })
+            }
+        },
+        /**
+         * 生成代码配置
+         */
+        * settingCodeColumns({ payload, callback }, { call }) {
+            console.log("payload", payload);
+            let rs = yield call(settingCodeColumns, { tableName: payload.tableName, columnsValue: payload.columnsValue });
+            if (rs.code == 200) {
+                callback({
+                    code: 200,
+                    msg: "成功"
+                })
+            } else {
+                callback({
+                    code: -99,
+                    msg: rs.msg
                 })
             }
         }

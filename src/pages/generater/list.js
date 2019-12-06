@@ -3,6 +3,8 @@ import { connect } from 'dva';
 import { Button, Table, Divider, Tag, Form, Input, Modal } from 'antd';
 import moment from "moment";
 import GenCodeSet from "./genCodeSet";
+import util from '../../utils/util';
+import notification from '../../utils/notification';
 // 与model建立连接
 @connect(({ generater }) => ({
   datalist: generater.datalist
@@ -99,17 +101,30 @@ class List extends React.PureComponent {
   }
 
   enterSet = e => {
-    let that = this;
+    let _this = this;
     //首先验证基本信息是否完整
-    that.genCodeSetForm.props.form.validateFields((err, values) => {
-      console.log("配置参数", values)
+    _this.genCodeSetForm.props.form.validateFields((err, settingFormData) => {
       if (!err) {
-        console.log("配置参数", values)
+        let columnsValue = fttSetingData(_this.state.columnsSetting, settingFormData);
+        const { dispatch } = _this.props;
+        dispatch({
+          type: 'generater/settingCodeColumns',
+          payload: { tableName: _this.state.tableName, columnsValue: columnsValue },
+          callback: (res) => {
+            if (res) {
+              if (res.code == 200) {
+                this.setState({
+                  visible: false
+                })
+              }else{
+                notification.error(res.msg);
+              }
+            }
+          }
+        });
       }
     });
-    // this.setState({
-    //   visible: false
-    // })
+
   }
 
   render() {
@@ -207,5 +222,31 @@ class List extends React.PureComponent {
 }
 
 export default List;
+
+function fttSetingData(columns, settingFormData) {
+  columns = JSON.parse(JSON.stringify(columns));
+  let retSeting = columns;
+  for (var i = 0; i < columns.length; i++) {
+    //字段描述
+    retSeting[i].column_comment = settingFormData["column_comment" + columns[i].t_column_name];
+    //是否主键
+    retSeting[i].is_pk = util.fttBoolean(settingFormData["is_pk" + columns[i].t_column_name], true);
+    //是否新增
+    retSeting[i].is_add = util.fttBoolean(settingFormData["is_add" + columns[i].t_column_name], true);
+    //是否编辑
+    retSeting[i].is_edit = util.fttBoolean(settingFormData["is_edit" + columns[i].t_column_name], true);
+    //是否列表展示
+    retSeting[i].is_list = util.fttBoolean(settingFormData["is_list" + columns[i].t_column_name], true);
+    //是否查询
+    retSeting[i].is_query = util.fttBoolean(settingFormData["is_query" + columns[i].t_column_name], true);
+    //是否必填
+    retSeting[i].is_required = util.fttBoolean(settingFormData["is_required" + columns[i].t_column_name], true);
+    //查询类型
+    retSeting[i].query_type = settingFormData["query_type" + columns[i].t_column_name];
+    //控件类型
+    retSeting[i].html_type = settingFormData["html_type" + columns[i].t_column_name];
+  }
+  return retSeting;
+}
 
 

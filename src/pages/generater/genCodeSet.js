@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Form, Input, Switch, Select } from 'antd';
+import { Table, Form, Input, Checkbox, Select } from 'antd';
 import moment from "moment";
+import util from "../../utils/util";
 const { Option } = Select;
 // 与model建立连接
 @connect(({ }) => ({}))
@@ -17,19 +18,7 @@ class Page extends React.PureComponent {
         }
     }
     componentDidMount() {
-        const { dispatch } = this.props;
-        dispatch({
-            type: 'generater/tablelist'
-        });
-    }
-
-    genCode = (tablename) => {
-        console.log("生成代码", tablename);
-        const { dispatch } = this.props;
-        dispatch({
-            type: 'generater/genCode',
-            payload: { tablename }
-        });
+        
     }
 
     render() {
@@ -60,13 +49,26 @@ class Page extends React.PureComponent {
             {
                 title: '字段描述',
                 align: "center",
-                dataIndex: 't_column_comment',
-                key: 't_column_comment',
+                dataIndex: 'column_comment',
+                key: 'column_comment',
                 render: (text, rowData) => (
                     <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('column_comment' + rowData.t_column_name, {
                         initialValue: (rowData.column_comment || rowData.t_column_comment),
                         rules: [{ required: true, message: '请填写字段描述' }],
                     })(<Input allowClear style={{ width: "120px" }} />)}</Form.Item></span>
+                )
+            },
+            {
+                title: '主键',
+                align: "center",
+                dataIndex: 'is_pk',
+                key: 'is_pk',
+                render: (text, rowData) => (
+                    <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('is_pk' + rowData.t_column_name, {
+                        valuePropName: "checked",
+                        initialValue: util.fttBoolean(rowData.is_pk),
+                        rules: [{ required: true, message: '请选择是否主键' }],
+                    })(<Checkbox />)}</Form.Item></span>
                 )
             },
             {
@@ -77,9 +79,9 @@ class Page extends React.PureComponent {
                 render: (text, rowData) => (
                     <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('is_add' + rowData.t_column_name, {
                         valuePropName: "checked",
-                        initialValue: (rowData.is_add == 1),
+                        initialValue: util.fttBoolean(rowData.is_add),
                         rules: [{ required: true, message: '请选择是否新增' }],
-                    })(<Switch />)}</Form.Item></span>
+                    })(<Checkbox />)}</Form.Item></span>
                 )
             },
             {
@@ -90,9 +92,9 @@ class Page extends React.PureComponent {
                 render: (text, rowData) => (
                     <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('is_edit' + rowData.t_column_name, {
                         valuePropName: "checked",
-                        initialValue: (rowData.is_edit == 1),
+                        initialValue: util.fttBoolean(rowData.is_edit),
                         rules: [{ required: true, message: '请选择是否编辑' }],
-                    })(<Switch />)}</Form.Item></span>
+                    })(<Checkbox />)}</Form.Item></span>
                 )
             },
             {
@@ -101,11 +103,11 @@ class Page extends React.PureComponent {
                 dataIndex: 'is_list',
                 key: 'is_list',
                 render: (text, rowData) => (
-                    <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('is_edit' + rowData.t_column_name, {
+                    <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('is_list' + rowData.t_column_name, {
                         valuePropName: "checked",
-                        initialValue: (rowData.is_list == 1),
+                        initialValue: util.fttBoolean(rowData.is_list),
                         rules: [{ required: true, message: '请选择是否列表' }],
-                    })(<Switch />)}</Form.Item></span>
+                    })(<Checkbox />)}</Form.Item></span>
                 )
             },
             {
@@ -116,9 +118,9 @@ class Page extends React.PureComponent {
                 render: (text, rowData) => (
                     <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('is_query' + rowData.t_column_name, {
                         valuePropName: "checked",
-                        initialValue: (rowData.is_query == 1),
+                        initialValue: util.fttBoolean(rowData.is_query),
                         rules: [{ required: true, message: '请选择是否查询' }],
-                    })(<Switch />)}</Form.Item></span>
+                    })(<Checkbox />)}</Form.Item></span>
                 )
             },
             {
@@ -149,12 +151,12 @@ class Page extends React.PureComponent {
                 render: (text, rowData) => (
                     <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('is_required' + rowData.t_column_name, {
                         valuePropName: "checked",
-                        initialValue: (rowData.is_required == 1),
+                        initialValue: util.fttBoolean(rowData.is_required),
                         rules: [{ required: true, message: '是否必填' }],
-                    })(<Switch />)}</Form.Item></span>
+                    })(<Checkbox />)}</Form.Item></span>
                 )
             },
-            {
+            { 
                 title: '控件类型',
                 align: "center",
                 dataIndex: 'html_type',

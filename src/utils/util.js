@@ -1,5 +1,18 @@
 import notification from "./notification";
 const util = {
+    fttBoolean(value, isRev) {
+        if (isRev) {
+            //正向 true=>1,false=>0
+            if (value == true) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            //反向，1=>true,0=>false
+            return value == 1;
+        }
+    },
     /**
      * 检查 value 是否为空
      * 如果是null，直接返回true；如果是类数组，判断数据长度；如果是Object对象，判断是否具有属性；如果是其他数据，直接返回false(也可改为返回true)

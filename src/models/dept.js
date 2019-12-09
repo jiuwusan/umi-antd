@@ -1,6 +1,5 @@
-import deptApi from '../api/deptApi'
-import util from '../utils/util'
-import { formatResultsErrors } from "jest-message-util";
+import deptApi from 'api/deptApi'
+import util from 'utils/util'
 const {
     queryDataList,
     addData

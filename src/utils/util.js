@@ -1,5 +1,28 @@
 import notification from "./notification";
+import config from "./config";
 const util = {
+    /**
+     * 判断请求状态
+     * @param {状态码} code 
+     * @param {是否提示} notifice 
+     * @param {提示信息} msg 
+     */
+    verifyErrCode(code, notifice, msg) {
+        if (code) {
+            let status = (code == config.SUCCEEDCODE);
+            if (notifice && status) {
+                //给一个操作成功的提示
+                notification.success(msg || "操作成功 ！！！");
+            }
+            return status;
+        }
+        return false;
+    },
+    /**
+     * 格式化boolean值
+     * @param {*} value 
+     * @param {*} isRev 
+     */
     fttBoolean(value, isRev) {
         if (isRev) {
             //正向 true=>1,false=>0

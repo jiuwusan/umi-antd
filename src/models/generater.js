@@ -1,5 +1,6 @@
-import generaterApi from '../api/generaterApi'
+import generaterApi from 'api/generaterApi'
 import { formatResultsErrors } from "jest-message-util";
+import util from 'utils/util'
 const {
     queryDataList,
     genCode,
@@ -118,7 +119,7 @@ export default {
         * settingCodeColumns({ payload, callback }, { call }) {
             console.log("payload", payload);
             let rs = yield call(settingCodeColumns, { tableName: payload.tableName, columnsValue: payload.columnsValue });
-            if (rs.code == 200) {
+            if (util.verifyErrCode(rs.code, true, "配置成功")) {
                 callback({
                     code: 200,
                     msg: "成功"

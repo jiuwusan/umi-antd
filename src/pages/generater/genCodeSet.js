@@ -18,7 +18,7 @@ class Page extends React.PureComponent {
         }
     }
     componentDidMount() {
-        
+
     }
 
     render() {
@@ -156,7 +156,7 @@ class Page extends React.PureComponent {
                     })(<Checkbox />)}</Form.Item></span>
                 )
             },
-            { 
+            {
                 title: '控件类型',
                 align: "center",
                 dataIndex: 'html_type',
@@ -167,12 +167,19 @@ class Page extends React.PureComponent {
                         rules: [{ required: true, message: '控件类型' }],
                     })(<Select allowClear style={{ width: 120 }}>
                         <Option value="01">文本框</Option>
-                        <Option value="02">文本域</Option>
-                        <Option value="03">下拉框</Option>
-                        <Option value="04">下拉多选框</Option>
+                        <Option value="02">数字输入框</Option>
+                        <Option value="03">文本域</Option>
+                        <Option value="04">开关</Option>
                         <Option value="05">复选框</Option>
                         <Option value="06">单选框</Option>
-                        <Option value="07">日期控件</Option>
+                        <Option value="07">下拉框</Option>
+                        <Option value="08">下拉多选框</Option>
+                        <Option value="09">级联选择框</Option>
+                        <Option value="10">树形选择框</Option>
+                        <Option value="11">日期选择框</Option>
+                        <Option value="12">时间选择框</Option>
+                        <Option value="13">图片上传</Option>
+                        <Option value="14">文件上传</Option>
                     </Select>)}</Form.Item></span>
                 )
             },

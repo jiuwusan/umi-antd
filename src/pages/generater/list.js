@@ -229,6 +229,10 @@ function fttSetingData(columns, settingFormData) {
   for (var i = 0; i < columns.length; i++) {
     //字段描述
     retSeting[i].column_comment = settingFormData["column_comment" + columns[i].t_column_name];
+    //数据类型
+    retSeting[i].model_type = settingFormData["model_type" + columns[i].t_column_name];
+    //数据长度
+    retSeting[i].model_long = settingFormData["model_long" + columns[i].t_column_name];
     //是否主键
     retSeting[i].is_pk = util.fttBoolean(settingFormData["is_pk" + columns[i].t_column_name], true);
     //是否新增

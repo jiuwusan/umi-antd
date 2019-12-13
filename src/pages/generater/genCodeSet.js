@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Form, Input, Checkbox, Select } from 'antd';
+import { Table, Form, Input, Checkbox, Select, Tag, InputNumber } from 'antd';
 import moment from "moment";
 import util from "../../utils/util";
 const { Option } = Select;
@@ -41,11 +41,23 @@ class Page extends React.PureComponent {
                 key: 't_column_name',
             },
             {
-                title: '物理类型',
+                title: '字段类型',
                 align: "center",
                 dataIndex: 't_data_type',
                 key: 't_data_type',
             },
+            // {
+            //     title: '物类长度',
+            //     align: "center",
+            //     dataIndex: 't_data_type_length',
+            //     key: 't_data_type_length',
+            //     render: (text, rowData) => {
+            //         if (rowData.t_data_type_length) {
+            //             return rowData.t_data_type_length;
+            //         }
+            //         return (<Tag color="volcano">不支持</Tag>)
+            //     }
+            // },
             {
                 title: '字段描述',
                 align: "center",
@@ -56,6 +68,38 @@ class Page extends React.PureComponent {
                         initialValue: (rowData.column_comment || rowData.t_column_comment),
                         rules: [{ required: true, message: '请填写字段描述' }],
                     })(<Input allowClear style={{ width: "120px" }} />)}</Form.Item></span>
+                )
+            },
+            {
+                title: '数据类型',
+                align: "center",
+                dataIndex: 'model_type',
+                key: 'model_type',
+                render: (text, rowData) => (
+                    <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('model_type' + rowData.t_column_name, {
+                        initialValue: rowData.model_type || dbModelType(rowData.t_data_type),
+                        rules: [{ required: true, message: '数据类型' }],
+                    })(<Select allowClear style={{ width: 100 }}>
+                        <Option value="String">String</Option>
+                        <Option value="text">Text</Option>
+                        <Option value="Interger">Interger</Option>
+                        <Option value="Float">Float</Option>
+                        <Option value="Double">Double</Option>
+                        <Option value="Date">Date</Option>
+                        <Option value="UUID">UUID</Option>
+                    </Select>)}</Form.Item></span>
+                )
+            },
+            {
+                title: '数据长度',
+                align: "center",
+                dataIndex: 'model_long',
+                key: 'model_long',
+                render: (text, rowData) => (
+                    <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('model_long' + rowData.t_column_name, {
+                        initialValue: fttModelLong(rowData.t_data_type_length,rowData.model_long),
+                        rules: [{ required: fttModelLong(rowData.t_data_type_length,rowData.model_long) != "", message: '请填写数据长度' }],
+                    })(<InputNumber allowClear disabled={fttModelLong(rowData.t_data_type_length,rowData.model_long) == ""} style={{ width: "120px" }} />)}</Form.Item></span>
                 )
             },
             {
@@ -187,7 +231,7 @@ class Page extends React.PureComponent {
 
 
         return (
-            <div style={{ marginTop: "15px", height: "60vh", overflow: "auto" }}>
+            <div style={{ marginTop: "15px", height: "75vh", overflow: "auto" }}>
                 <Table columns={columns} rowKey="table_id" dataSource={columnsSetting} size="small" pagination={false} />
             </div>
         );
@@ -195,3 +239,27 @@ class Page extends React.PureComponent {
 }
 
 export default Page;
+
+function dbModelType(dbType) {
+    const dbTypeMap = {
+        "char": "String",
+        "varchar": "String",
+        "text": "Text",
+        "int": "Interger",
+        "float": "Float",
+        "double": "Double",
+        "date": "Date",
+        "datetime": "Date",
+    }
+    if (dbTypeMap[dbType]) {
+        return dbTypeMap[dbType]
+    }
+    return "String";
+}
+
+function fttModelLong(dbLong, modelLong) {
+    if (dbLong) {
+        return modelLong || dbLong;
+    }
+    return "";
+}

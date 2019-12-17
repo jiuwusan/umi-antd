@@ -38,7 +38,8 @@ export default {
   alias: {
     api: resolve(__dirname, './src/api/'),
     services: resolve(__dirname, './src/services/'),
-    utils: resolve(__dirname, './src/utils/')
+    utils: resolve(__dirname, './src/utils/'),
+    components: resolve(__dirname, './src/components/')
   },
   mock: {
     //exclude: ['mock/**/*.js'],

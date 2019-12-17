@@ -5,6 +5,7 @@ import moment from "moment";
 import GenCodeSet from "./genCodeSet";
 import util from '../../utils/util';
 import notification from '../../utils/notification';
+import MoButton from "components/form/MoButton";
 // 与model建立连接
 @connect(({ generater }) => ({
   datalist: generater.datalist
@@ -116,7 +117,7 @@ class List extends React.PureComponent {
                 this.setState({
                   visible: false
                 })
-              }else{
+              } else {
                 notification.error(res.msg);
               }
             }
@@ -127,8 +128,14 @@ class List extends React.PureComponent {
 
   }
 
+  loadBackTest = (loadBack) => {
+    setTimeout(() => {
+      loadBack();
+    }, 5000);
+  }
+
   render() {
-    const { search, pageChange, pageSizeChange, genCode, genCodeSetting, cancelSet } = this;
+    const { search, pageChange, pageSizeChange, genCode, genCodeSetting, cancelSet, loadBackTest } = this;
     const { datalist } = this.props;
     const { tableName, columnsSetting, settingKey } = this.state;
     const { getFieldDecorator } = this.props.form;
@@ -169,9 +176,11 @@ class List extends React.PureComponent {
         key: 'table_id',
         render: (record) => (
           <span>
-            <Button onClick={genCode.bind(this, record.table_name)} type="primary" icon="tool" size="small" htmlType="submit" >生成代码</Button>
+            <MoButton type="primary" icon="tool" size="small" moClick={(loadBack) => loadBackTest(loadBack)}>生成代码</MoButton>
             <Divider type="vertical" />
-            <Button onClick={genCodeSetting.bind(this, record.table_name)} type="danger" icon="tool" size="small" htmlType="submit" >配置</Button>
+            <Button onClick={genCode.bind(this, record.table_name)} type="primary" icon="tool" size="small">生成代码</Button>
+            <Divider type="vertical" />
+            <Button onClick={genCodeSetting.bind(this, record.table_name)} type="danger" icon="tool" size="small">配置</Button>
           </span>
         ),
       },

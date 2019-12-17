@@ -149,9 +149,10 @@ export default function request(options) {
 
       let msg
       let statusCode
-
+      let result = {}
       if (response && response instanceof Object) {
         const { data, statusText } = response
+        result = data;
         statusCode = response.status
         msg = data.message || statusText
         //对返回status进行判断
@@ -181,6 +182,7 @@ export default function request(options) {
         success: false,
         statusCode,
         message: msg,
+        ...result,
       })
     })
 }

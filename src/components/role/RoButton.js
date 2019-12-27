@@ -26,11 +26,11 @@ class RoButton extends React.PureComponent {
     }
 
     render() {
-        const { size, icon, type } = this.props;
-        const { loading } = this.state;
+        const { size, icon, type, sign } = this.props;
+        const { visible } = this.state;
         const { onClick } = this;
 
-        return (<Button size={size || "default"} icon={icon || "-"} type={type || "-"} onClick={onClick} >
+        return (<Button style={{ display: visible == true ? "block" : "none" }} size={size || "default"} icon={icon || "-"} type={type || "-"} onClick={onClick} >
             {this.props.children}
         </Button>);
     }

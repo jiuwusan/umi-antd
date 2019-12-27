@@ -53,7 +53,7 @@ class List extends React.PureComponent {
     });
   }
 
-  genCode = (tablename) => {
+  genCode = (tablename, loadBack) => {
     console.log("生成代码", tablename);
     const { dispatch } = this.props;
     dispatch({
@@ -176,9 +176,7 @@ class List extends React.PureComponent {
         key: 'table_id',
         render: (record) => (
           <span>
-            <MoButton type="primary" icon="tool" size="small" moClick={(loadBack) => loadBackTest(loadBack)}>生成代码</MoButton>
-            <Divider type="vertical" />
-            <Button onClick={genCode.bind(this, record.table_name)} type="primary" icon="tool" size="small">生成代码</Button>
+            <MoButton type="primary" icon="tool" size="small" moAuto={3} moClick={(loadBack) => genCode(record.table_name, loadBack)}>生成代码</MoButton>
             <Divider type="vertical" />
             <Button onClick={genCodeSetting.bind(this, record.table_name)} type="danger" icon="tool" size="small">配置</Button>
           </span>

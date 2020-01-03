@@ -92,8 +92,25 @@ export default {
          * 生成代码
          */
         * genCode({ payload }, { call }) {
-            console.log("payload", payload);
+            console.log("payload", payload); 
             let rs = yield call(genCode, { tablename: payload.tablename });
+            const blob = new Blob([rs.data], { type: 'application/octet-stream;charset=utf-8' })
+            //表名为：批次号+时间戳
+            const fileName = "代码生成(" + new Date().getTime() + ").zip";
+            if ('download' in document.createElement('a')) { // 非IE下载
+                const elink = document.createElement('a');
+                elink.download = fileName;
+                elink.style.display = 'none';
+                elink.href = URL.createObjectURL(blob);
+                document.body.appendChild(elink);
+                elink.click();
+                URL.revokeObjectURL(elink.href);// 释放 URL对象
+                document.body.removeChild(elink);
+            } else { // IE10+下载
+                navigator.msSaveBlob(blob, fileName)
+            }
+            //去掉加载中
+            // notification.success("生成成功");
         },
         /**
          * 生成代码配置

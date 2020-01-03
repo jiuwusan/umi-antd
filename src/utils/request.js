@@ -90,7 +90,7 @@ export default function request(options) {
   })
 
   //文件下载
-  if (url.includes('download')) {
+  if (url.includes('download') || url.includes('genCode')) {
     options.responseType = 'blob';
   }
 

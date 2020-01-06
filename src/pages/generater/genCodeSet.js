@@ -80,7 +80,7 @@ class Page extends React.PureComponent {
                     <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('model_type' + rowData.t_column_name, {
                         initialValue: rowData.model_type || dbModelType(rowData.t_data_type),
                         rules: [{ required: true, message: '数据类型' }],
-                    })(<Select allowClear style={{ width: 100 }}>
+                    })(<Select allowClear style={{ width: 110 }}>
                         <Option value="String">String</Option>
                         <Option value="text">Text</Option>
                         <Option value="Interger">Interger</Option>
@@ -100,7 +100,7 @@ class Page extends React.PureComponent {
                     <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('model_long' + rowData.t_column_name, {
                         initialValue: fttModelLong(rowData.t_data_type_length,rowData.model_long),
                         rules: [{ required: fttModelLong(rowData.t_data_type_length,rowData.model_long) != "", message: '请填写数据长度' }],
-                    })(<InputNumber allowClear disabled={fttModelLong(rowData.t_data_type_length,rowData.model_long) == ""} style={{ width: "120px" }} />)}</Form.Item></span>
+                    })(<InputNumber allowClear disabled={fttModelLong(rowData.t_data_type_length,rowData.model_long) == ""} style={{ width: "80px" }} />)}</Form.Item></span>
                 )
             },
             {
@@ -232,7 +232,7 @@ class Page extends React.PureComponent {
 
 
         return (
-            <div style={{ marginTop: "15px", height: "75vh", overflow: "auto" }}>
+            <div style={{ marginTop: "15px", height: "70vh", overflow: "auto" }}>
                 <Table columns={columns} rowKey="t_column_name" dataSource={columnsSetting} size="small" pagination={false} />
             </div>
         );

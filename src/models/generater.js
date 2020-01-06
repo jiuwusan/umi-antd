@@ -1,6 +1,6 @@
 import generaterApi from 'api/generaterApi'
-import { formatResultsErrors } from "jest-message-util";
 import util from 'utils/util'
+import notification from 'utils/notification'
 const {
     queryDataList,
     genCode,
@@ -94,23 +94,19 @@ export default {
         * genCode({ payload }, { call }) {
             console.log("payload", payload);
             let rs = yield call(genCode, { tablename: payload.tablename });
-            const blob = new Blob([rs.data], { type: 'application/octet-stream;charset=utf-8' })
-            //表名为：批次号+时间戳
-            const fileName = "代码生成(" + new Date().getTime() + ").zip";
-            if ('download' in document.createElement('a')) { // 非IE下载
-                const elink = document.createElement('a');
-                elink.download = fileName;
-                elink.style.display = 'none';
-                elink.href = URL.createObjectURL(blob);
-                document.body.appendChild(elink);
-                elink.click();
-                URL.revokeObjectURL(elink.href);// 释放 URL对象
-                document.body.removeChild(elink);
-            } else { // IE10+下载
-                navigator.msSaveBlob(blob, fileName)
+            let reader = new FileReader();
+            reader.readAsText(rs.data);
+            reader.onload = e => {
+                if (e.target.result) {
+                    try {
+                        let rst = JSON.parse(e.target.result);
+                        notification.error(rst.msg || "代码生成失败，请重试 ！！！");
+                    } catch (error) {
+                        notification.success("代码生成完成，开始下载 ！！！");
+                        util.download(rs.data, "zip");
+                    }
+                }
             }
-            //去掉加载中
-            // notification.success("生成成功");
         },
         /**
          * 生成代码配置
@@ -118,8 +114,8 @@ export default {
         * genCodeColumns({ payload, callback }, { call }) {
             console.log("payload", payload);
             let rs = yield call(genCodeColumns, { tablename: payload.tablename });
-            console.log("rs",rs);
-            if (util.verifyErrCode(rs.code)) {
+            console.log("rs", rs);
+            if (util.verifyErrCode(rs.code, "", "获取配置信息失败 ！！！")) {
                 callback({
                     code: rs.code,
                     tableName: payload.tablename,
@@ -133,7 +129,7 @@ export default {
         * settingCodeColumns({ payload, callback }, { call }) {
             console.log("payload", payload);
             let rs = yield call(settingCodeColumns, { tableName: payload.tableName, columnsValue: payload.columnsValue });
-            if (util.verifyErrCode(rs.code, "配置成功")) {
+            if (util.verifyErrCode(rs.code, "配置成功", rs.msg)) {
                 callback({
                     code: 200,
                     msg: "成功"

@@ -2,18 +2,42 @@ import notification from "./notification";
 import config from "./config";
 const util = {
     /**
+     * 文件下载
+     * @param {blob 数据类型} data 
+     */
+    download(data, fileType) {
+        const blob = new Blob([data], { type: 'application/octet-stream;charset=utf-8' })
+        //表名为：批次号+时间戳
+        const fileName = "代码生成(" + new Date().getTime() + ")." + fileType;
+        if ('download' in document.createElement('a')) { // 非IE下载
+            const elink = document.createElement('a');
+            elink.download = fileName;
+            elink.style.display = 'none';
+            elink.href = URL.createObjectURL(blob);
+            document.body.appendChild(elink);
+            elink.click();
+            URL.revokeObjectURL(elink.href);// 释放 URL对象
+            document.body.removeChild(elink);
+        } else { // IE10+下载
+            navigator.msSaveBlob(blob, fileName)
+        }
+    },
+    /**
      * 判断请求状态
      * @param {状态码} code 
-     * @param {是否提示，提示语} notifice 
+     * @param {成功，提示语} notifice 
+     * @param {失败，提示语} notifice 
      * @param {成功状态码} SUCCEEDCODE 
      */
-    verifyErrCode(code,notifice,SUCCEEDCODE) {
+    verifyErrCode(code, notifice, errnotifice, SUCCEEDCODE) {
         SUCCEEDCODE = SUCCEEDCODE || config.SUCCEEDCODE;
         if (code) {
             let status = (code == SUCCEEDCODE);
-            if (notifice) {
+            if (notifice && status) {
                 //给一个操作成功的提示
                 notification.success(notifice);
+            } else if (errnotifice && (!status)) {
+                notification.error(notifice);
             }
             return status;
         }

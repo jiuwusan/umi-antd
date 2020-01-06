@@ -98,9 +98,9 @@ class Page extends React.PureComponent {
                 key: 'model_long',
                 render: (text, rowData) => (
                     <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('model_long' + rowData.t_column_name, {
-                        initialValue: fttModelLong(rowData.t_data_type_length,rowData.model_long),
-                        rules: [{ required: fttModelLong(rowData.t_data_type_length,rowData.model_long) != "", message: '请填写数据长度' }],
-                    })(<InputNumber allowClear disabled={fttModelLong(rowData.t_data_type_length,rowData.model_long) == ""} style={{ width: "80px" }} />)}</Form.Item></span>
+                        initialValue: fttModelLong(rowData.t_data_type_length, rowData.model_long),
+                        rules: [{ required: fttModelLong(rowData.t_data_type_length, rowData.model_long) != "", message: '请填写数据长度' }],
+                    })(<InputNumber allowClear disabled={fttModelLong(rowData.t_data_type_length, rowData.model_long) == ""} style={{ width: "80px" }} />)}</Form.Item></span>
                 )
             },
             {
@@ -225,6 +225,7 @@ class Page extends React.PureComponent {
                         <Option value="12">时间选择框</Option>
                         <Option value="13">图片上传</Option>
                         <Option value="14">文件上传</Option>
+                        <Option value="15">富文本</Option>
                     </Select>)}</Form.Item></span>
                 )
             },

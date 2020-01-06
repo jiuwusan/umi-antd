@@ -4,15 +4,16 @@ const util = {
     /**
      * 判断请求状态
      * @param {状态码} code 
-     * @param {是否提示} notifice 
-     * @param {提示信息} msg 
+     * @param {是否提示，提示语} notifice 
+     * @param {成功状态码} SUCCEEDCODE 
      */
-    verifyErrCode(code, notifice, msg) {
+    verifyErrCode(code,notifice,SUCCEEDCODE) {
+        SUCCEEDCODE = SUCCEEDCODE || config.SUCCEEDCODE;
         if (code) {
-            let status = (code == config.SUCCEEDCODE);
-            if (notifice && status) {
+            let status = (code == SUCCEEDCODE);
+            if (notifice) {
                 //给一个操作成功的提示
-                notification.success(msg || "操作成功 ！！！");
+                notification.success(notifice);
             }
             return status;
         }

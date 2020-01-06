@@ -66,6 +66,7 @@ class Login extends React.PureComponent {
           <Form onSubmit={this.handleSubmit}>
             <Form.Item>
               {getFieldDecorator('login_name', {
+                initialValue:"superAdmin",
                 rules: [{ required: true, message: '请输入用户名!' }],
               })(
                 <Input
@@ -77,6 +78,7 @@ class Login extends React.PureComponent {
             </Form.Item>
             <Form.Item>
               {getFieldDecorator('password', {
+                initialValue:"123456",
                 rules: [{ required: true, message: '请输入密码!' }],
               })(
                 <Input

@@ -92,7 +92,7 @@ export default {
          * 生成代码
          */
         * genCode({ payload }, { call }) {
-            console.log("payload", payload); 
+            console.log("payload", payload);
             let rs = yield call(genCode, { tablename: payload.tablename });
             const blob = new Blob([rs.data], { type: 'application/octet-stream;charset=utf-8' })
             //表名为：批次号+时间戳
@@ -118,15 +118,12 @@ export default {
         * genCodeColumns({ payload, callback }, { call }) {
             console.log("payload", payload);
             let rs = yield call(genCodeColumns, { tablename: payload.tablename });
-            if (rs.code == 200) {
+            console.log("rs",rs);
+            if (util.verifyErrCode(rs.code)) {
                 callback({
-                    code: 200,
+                    code: rs.code,
                     tableName: payload.tablename,
                     columnsSetting: rs.data
-                })
-            } else {
-                callback({
-                    code: -99
                 })
             }
         },
@@ -136,7 +133,7 @@ export default {
         * settingCodeColumns({ payload, callback }, { call }) {
             console.log("payload", payload);
             let rs = yield call(settingCodeColumns, { tableName: payload.tableName, columnsValue: payload.columnsValue });
-            if (util.verifyErrCode(rs.code, true, "配置成功")) {
+            if (util.verifyErrCode(rs.code, "配置成功")) {
                 callback({
                     code: 200,
                     msg: "成功"

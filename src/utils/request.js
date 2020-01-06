@@ -30,9 +30,8 @@ const codeMessage = {
 };
 
 export default function request(options) {
-  let { data, url, method = 'get' } = options
-  const cloneData = cloneDeep(data)
-  const original = url.replace(config.apiPrefix == "/" ? "" : config.apiPrefix, "");
+  let { data, url,uri, method = 'GET' } = options;
+  const cloneData = cloneDeep(data);
   try {
     let domain = '';
     /**
@@ -77,7 +76,7 @@ export default function request(options) {
   if (options.method == "POST") {
     options.params = {}
     //需要进行data格式化
-    if (util.inStrArray(original, config.qsclude)) {
+    if (util.inStrArray(uri, config.qsclude)) {
       options.data = qs.stringify(options.data);
     }
   }
@@ -90,12 +89,12 @@ export default function request(options) {
   })
 
   //文件下载
-  if (url.includes('download') || url.includes('genCode')) {
+  if (util.inStrArray(uri,config.blob)) {
     options.responseType = 'blob';
   }
 
   //文件上传
-  if (url.includes('/upload')) {
+  if (util.inStrArray(uri,config.multipart)) {
     options.headers = {
       'Content-Type': 'multipart/form-data'
     };

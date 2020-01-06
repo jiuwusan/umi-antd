@@ -70,7 +70,8 @@ class List extends React.PureComponent {
       type: 'generater/genCodeColumns',
       payload: { tablename },
       callback: (res) => {
-        if (res.code == 200) {
+        if (res) {
+          console.log("拉取配置信息成功",res);
           _this.setState({
             visible: true,
             tableName: res.tableName,
@@ -137,7 +138,7 @@ class List extends React.PureComponent {
   render() {
     const { search, pageChange, pageSizeChange, genCode, genCodeSetting, cancelSet, loadBackTest } = this;
     const { datalist } = this.props;
-    const { tableName, columnsSetting, settingKey } = this.state;
+    const { tableName, columnsSetting, settingKey, visible } = this.state;
     const { getFieldDecorator } = this.props.form;
 
     //表单渲染规则
@@ -217,7 +218,7 @@ class List extends React.PureComponent {
         <Modal
           width={"70vw"}
           title={tableName}
-          visible={this.state.visible}
+          visible={visible}
           onOk={this.enterSet}
           onCancel={this.cancelSet}>
           <GenCodeSet key={settingKey} columnsSetting={columnsSetting} wrappedComponentRef={(settingForm) => this.genCodeSetForm = settingForm}></GenCodeSet>

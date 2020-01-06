@@ -233,7 +233,7 @@ class Page extends React.PureComponent {
 
         return (
             <div style={{ marginTop: "15px", height: "75vh", overflow: "auto" }}>
-                <Table columns={columns} rowKey="table_id" dataSource={columnsSetting} size="small" pagination={false} />
+                <Table columns={columns} rowKey="t_column_name" dataSource={columnsSetting} size="small" pagination={false} />
             </div>
         );
     }

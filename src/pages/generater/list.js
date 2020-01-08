@@ -18,7 +18,8 @@ class List extends React.PureComponent {
     visible: false,
     columnsSetting: [],
     tableName: "",
-    settingKey: "qwer"
+    settingKey: "qwer",
+    selectedRowKeys: []
   }
 
   componentDidMount() {
@@ -61,7 +62,18 @@ class List extends React.PureComponent {
       payload: { tablenames: [tablename] }
     });
   }
-
+  genCodeBatch = (loadBack) => {
+    const { dispatch } = this.props;
+    let selectedRowKeys = this.state.selectedRowKeys;
+    if (selectedRowKeys.length == 0) {
+      notification.error("请先选择 table 再生成 ！！！");
+      return;
+    }
+    dispatch({
+      type: 'generater/genCode',
+      payload: { tablenames: this.state.selectedRowKeys }
+    });
+  }
   genCodeSetting = (tablename) => {
     console.log("生成代码配置", tablename);
     let _this = this;
@@ -135,12 +147,20 @@ class List extends React.PureComponent {
     }, 5000);
   }
 
-  render() {
-    const { search, pageChange, pageSizeChange, genCode, genCodeSetting, cancelSet, loadBackTest } = this;
-    const { datalist } = this.props;
-    const { tableName, columnsSetting, settingKey, visible } = this.state;
-    const { getFieldDecorator } = this.props.form;
+  onRowSelectChange = selectedRowKeys => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    this.setState({ selectedRowKeys });
+  };
 
+  render() {
+    const { search, pageChange, pageSizeChange, genCode, genCodeSetting, onRowSelectChange, genCodeBatch } = this;
+    const { datalist } = this.props;
+    const { tableName, columnsSetting, settingKey, visible, selectedRowKeys } = this.state;
+    const { getFieldDecorator } = this.props.form;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: onRowSelectChange,
+    };
     //表单渲染规则
     const columns = [
       {
@@ -205,8 +225,11 @@ class List extends React.PureComponent {
           </Form>
 
         </div>
-        <div style={{ marginTop: "15px" }}>
-          <Table columns={columns} rowKey="table_id" dataSource={datalist.list} size="small" pagination={{
+        <div style={{ marginTop: "10px" }}>
+          <div style={{ width: "100%", marginBottom: "10px" }} className="centerY">
+            <MoButton type="primary" icon="tool" size="small" moAuto={3} moClick={(loadBack) => genCodeBatch(loadBack)}>批量生成代码</MoButton>
+          </div>
+          <Table rowSelection={rowSelection} columns={columns} rowKey="table_id" dataSource={datalist.list} size="small" pagination={{
             "size": "small",
             "total": datalist.total,
             "showSizeChanger": true,

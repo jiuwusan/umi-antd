@@ -37,7 +37,7 @@ const util = {
                 //给一个操作成功的提示
                 notification.success(notifice);
             } else if (errnotifice && (!status)) {
-                notification.error(notifice);
+                notification.error(errnotifice);
             }
             return status;
         }

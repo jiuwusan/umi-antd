@@ -247,6 +247,8 @@ function fttSetingData(columns, settingFormData) {
     retSeting[i].is_add = util.fttBoolean(settingFormData["is_add" + columns[i].t_column_name], true);
     //是否编辑
     retSeting[i].is_edit = util.fttBoolean(settingFormData["is_edit" + columns[i].t_column_name], true);
+    //是否详情
+    retSeting[i].is_detail = util.fttBoolean(settingFormData["is_detail" + columns[i].t_column_name], true);
     //是否列表展示
     retSeting[i].is_list = util.fttBoolean(settingFormData["is_list" + columns[i].t_column_name], true);
     //是否查询

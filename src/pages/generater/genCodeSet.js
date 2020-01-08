@@ -83,7 +83,7 @@ class Page extends React.PureComponent {
                     })(<Select allowClear style={{ width: 110 }}>
                         <Option value="String">String</Option>
                         <Option value="text">Text</Option>
-                        <Option value="Interger">Interger</Option>
+                        <Option value="Integer">Integer</Option>
                         <Option value="Float">Float</Option>
                         <Option value="Double">Double</Option>
                         <Option value="Date">Date</Option>
@@ -139,6 +139,19 @@ class Page extends React.PureComponent {
                         valuePropName: "checked",
                         initialValue: util.fttBoolean(rowData.is_edit),
                         rules: [{ required: true, message: '请选择是否编辑' }],
+                    })(<Checkbox />)}</Form.Item></span>
+                )
+            },
+            {
+                title: '详情',
+                align: "center",
+                dataIndex: 'is_detail',
+                key: 'is_detail',
+                render: (text, rowData) => (
+                    <span><Form.Item style={{ marginBottom: 0, paddingBottom: 0 }}>{getFieldDecorator('is_detail' + rowData.t_column_name, {
+                        valuePropName: "checked",
+                        initialValue: util.fttBoolean(rowData.is_detail),
+                        rules: [{ required: true, message: '请选择是否详情' }],
                     })(<Checkbox />)}</Form.Item></span>
                 )
             },
@@ -247,7 +260,7 @@ function dbModelType(dbType) {
         "char": "String",
         "varchar": "String",
         "text": "Text",
-        "int": "Interger",
+        "int": "Integer",
         "float": "Float",
         "double": "Double",
         "date": "Date",

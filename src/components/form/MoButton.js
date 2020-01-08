@@ -52,11 +52,11 @@ class MoButton extends React.PureComponent {
     }
 
     render() {
-        const { size, icon, type } = this.props;
+        const { size, icon, type, ghost } = this.props;
         const { loading } = this.state;
         const { onClick } = this;
 
-        return (<Button size={size || "default"} icon={icon || "-"} type={type || "-"} onClick={onClick} loading={loading}>
+        return (<Button ghost={ghost || "false"} size={size || "default"} icon={icon || "-"} type={type || "-"} onClick={onClick} loading={loading}>
             {this.props.children}
         </Button>);
     }

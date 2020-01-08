@@ -93,7 +93,7 @@ export default {
          */
         * genCode({ payload }, { call }) {
             console.log("payload", payload);
-            let rs = yield call(genCode, { tablename: payload.tablename });
+            let rs = yield call(genCode, { tablenames: payload.tablenames });
             let reader = new FileReader();
             reader.readAsText(rs.data);
             reader.onload = e => {

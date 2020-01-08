@@ -58,7 +58,7 @@ class List extends React.PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'generater/genCode',
-      payload: { tablename }
+      payload: { tablenames: [tablename] }
     });
   }
 
@@ -71,7 +71,7 @@ class List extends React.PureComponent {
       payload: { tablename },
       callback: (res) => {
         if (res) {
-          console.log("拉取配置信息成功",res);
+          console.log("拉取配置信息成功", res);
           _this.setState({
             visible: true,
             tableName: res.tableName,
